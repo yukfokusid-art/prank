@@ -1,0 +1,345 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+
+  <title>Website Seru-seruan</title>
+  <meta name="description" content="Website seru-seruan dengan efek suara kejutan yang bisa diganti sendiri." />
+
+  <style>
+    :root {
+      --bg1: #020617;
+      --bg2: #312e81;
+      --bg3: #7c2d12;
+      --card: rgba(255, 255, 255, 0.12);
+      --border: rgba(255, 255, 255, 0.18);
+      --text: #ffffff;
+      --muted: rgba(255, 255, 255, 0.78);
+      --button: #ffffff;
+      --buttonText: #111827;
+    }
+
+    * {
+      box-sizing: border-box;
+      -webkit-tap-highlight-color: transparent;
+    }
+
+    html {
+      scroll-behavior: smooth;
+    }
+
+    body {
+      margin: 0;
+      min-height: 100vh;
+      display: grid;
+      place-items: center;
+      font-family: Arial, sans-serif;
+      background:
+        radial-gradient(circle at top left, rgba(255, 255, 255, 0.16), transparent 32%),
+        radial-gradient(circle at bottom right, rgba(251, 146, 60, 0.25), transparent 36%),
+        linear-gradient(135deg, var(--bg1), var(--bg2), var(--bg3));
+      color: var(--text);
+      text-align: center;
+      overflow: hidden;
+    }
+
+    body::before {
+      content: "";
+      position: fixed;
+      inset: -20%;
+      background:
+        radial-gradient(circle, rgba(255, 255, 255, 0.08) 0 2px, transparent 3px),
+        radial-gradient(circle, rgba(255, 255, 255, 0.05) 0 1px, transparent 2px);
+      background-size: 90px 90px, 42px 42px;
+      animation: floatBg 18s linear infinite;
+      pointer-events: none;
+    }
+
+    @keyframes floatBg {
+      from { transform: translate3d(0, 0, 0) rotate(0deg); }
+      to { transform: translate3d(-40px, 30px, 0) rotate(3deg); }
+    }
+
+    .wrap {
+      position: relative;
+      z-index: 2;
+      width: min(92%, 520px);
+      padding: 16px;
+    }
+
+    .card {
+      padding: 30px;
+      border-radius: 28px;
+      background: var(--card);
+      border: 1px solid var(--border);
+      backdrop-filter: blur(18px);
+      box-shadow: 0 24px 80px rgba(0, 0, 0, 0.42);
+      transform: translateY(0);
+      animation: cardIn 700ms ease both;
+    }
+
+    @keyframes cardIn {
+      from {
+        opacity: 0;
+        transform: translateY(20px) scale(0.98);
+      }
+      to {
+        opacity: 1;
+        transform: translateY(0) scale(1);
+      }
+    }
+
+    .badge {
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      padding: 8px 13px;
+      border-radius: 999px;
+      background: rgba(255, 255, 255, 0.13);
+      border: 1px solid rgba(255, 255, 255, 0.16);
+      color: rgba(255, 255, 255, 0.9);
+      font-size: 13px;
+      margin-bottom: 16px;
+    }
+
+    h1 {
+      font-size: clamp(32px, 8vw, 52px);
+      line-height: 1.02;
+      margin: 0 0 14px;
+      letter-spacing: -1.4px;
+    }
+
+    p {
+      margin: 0;
+      color: var(--muted);
+      line-height: 1.7;
+      font-size: 15.5px;
+    }
+
+    .actions {
+      display: grid;
+      gap: 12px;
+      margin-top: 24px;
+    }
+
+    button {
+      appearance: none;
+      border: 0;
+      width: 100%;
+      padding: 15px 20px;
+      border-radius: 999px;
+      background: var(--button);
+      color: var(--buttonText);
+      font-size: 15px;
+      font-weight: 800;
+      cursor: pointer;
+      box-shadow: 0 12px 28px rgba(0, 0, 0, 0.22);
+      transition: transform 180ms ease, opacity 180ms ease, box-shadow 180ms ease;
+    }
+
+    button:hover {
+      transform: translateY(-2px);
+      box-shadow: 0 18px 36px rgba(0, 0, 0, 0.28);
+    }
+
+    button:active {
+      transform: translateY(0) scale(0.98);
+    }
+
+    button:disabled {
+      opacity: 0.72;
+      cursor: not-allowed;
+      transform: none;
+    }
+
+    .hint {
+      margin-top: 15px;
+      font-size: 12.5px;
+      color: rgba(255, 255, 255, 0.62);
+    }
+
+    .surprise {
+      position: fixed;
+      inset: 0;
+      display: none;
+      place-items: center;
+      background:
+        radial-gradient(circle, rgba(255, 255, 255, 0.2), transparent 28%),
+        rgba(0, 0, 0, 0.9);
+      color: white;
+      font-size: clamp(42px, 13vw, 120px);
+      font-weight: 950;
+      letter-spacing: -3px;
+      z-index: 999;
+      animation: boom 0.22s ease infinite alternate;
+      user-select: none;
+    }
+
+    .surprise.active {
+      display: grid;
+    }
+
+    @keyframes boom {
+      from {
+        transform: scale(1) rotate(-1deg);
+        filter: contrast(1);
+      }
+      to {
+        transform: scale(1.09) rotate(1deg);
+        filter: contrast(1.25);
+      }
+    }
+
+    .small {
+      font-size: 13px;
+      margin-top: 12px;
+      color: rgba(255, 255, 255, 0.72);
+    }
+
+    @media (max-width: 480px) {
+      .card {
+        padding: 24px 18px;
+        border-radius: 24px;
+      }
+
+      p {
+        font-size: 14.5px;
+      }
+
+      .hint {
+        font-size: 12px;
+      }
+    }
+
+    @media (prefers-reduced-motion: reduce) {
+      *, *::before, *::after {
+        animation: none !important;
+        transition: none !important;
+      }
+    }
+  </style>
+</head>
+
+<body>
+  <main class="wrap">
+    <section class="card">
+      <div class="badge">🔊 Mode seru-seruan aktif</div>
+
+      <h1>Selamat Datang 😎</h1>
+
+      <p>
+        Klik tombol di bawah untuk masuk. Setelah itu, suara kejutan akan muncul otomatis
+        sesuai delay yang kamu atur di kode.
+      </p>
+
+      <div class="actions">
+        <button id="startBtn" type="button">Masuk Website</button>
+      </div>
+
+      <div class="small" id="statusText">
+        Suara akan aktif setelah pengunjung klik/tap tombol.
+      </div>
+
+      <div class="hint">
+        Browser biasanya memblokir suara otomatis sebelum ada klik/tap pertama.
+      </div>
+    </section>
+  </main>
+
+  <div class="surprise" id="surpriseBox" aria-hidden="true">
+    BOO! 😆
+  </div>
+
+  <audio id="surpriseSound" preload="auto"></audio>
+
+  <script>
+    /*
+      ===============================
+      CARA EDIT SOUND
+      ===============================
+
+      1. Masukkan file suara kamu ke folder:
+         /sounds/
+
+      2. Ganti bagian soundFile di bawah.
+         Contoh:
+         soundFile: "sounds/ketawa.mp3"
+         soundFile: "sounds/suara-kaget.wav"
+         soundFile: "sounds/backsound.mp3"
+
+      3. Upload ulang ke Cloudflare Pages.
+
+      Catatan:
+      - Format aman: .mp3, .wav, .ogg
+      - Volume: 0.1 sampai 1
+      - Delay: 1000 = 1 detik
+    */
+
+    const soundConfig = {
+      soundFile: "sounds/SHOLAWAT JIBRIL - NISSA SABYAN.mp3",
+      volume: 1,
+      delay: 3000,
+      playOnce: true,
+      showVisualEffect: true,
+      visualText: "BOO! 😆",
+      visualDuration: 1200
+    };
+
+    const startBtn = document.getElementById("startBtn");
+    const audio = document.getElementById("surpriseSound");
+    const surpriseBox = document.getElementById("surpriseBox");
+    const statusText = document.getElementById("statusText");
+
+    let alreadyPlayed = false;
+    let timer = null;
+
+    function setupAudio() {
+      audio.src = soundConfig.soundFile;
+      audio.volume = Math.max(0, Math.min(1, soundConfig.volume));
+      audio.load();
+    }
+
+    function showSurprise() {
+      if (!soundConfig.showVisualEffect) return;
+
+      surpriseBox.textContent = soundConfig.visualText;
+      surpriseBox.classList.add("active");
+
+      setTimeout(() => {
+        surpriseBox.classList.remove("active");
+      }, soundConfig.visualDuration);
+    }
+
+    async function playSurprise() {
+      if (soundConfig.playOnce && alreadyPlayed) return;
+
+      alreadyPlayed = true;
+      audio.currentTime = 0;
+
+      try {
+        await audio.play();
+        showSurprise();
+        statusText.textContent = "Efek suara berhasil diputar.";
+      } catch (error) {
+        alreadyPlayed = false;
+        startBtn.disabled = false;
+        startBtn.textContent = "Klik lagi untuk aktifkan suara";
+        statusText.textContent = "Browser memblokir suara. Klik tombol sekali lagi.";
+      }
+    }
+
+    function startExperience() {
+      startBtn.disabled = true;
+      startBtn.textContent = "Website aktif...";
+      statusText.textContent = "Tunggu sebentar, efek suara akan muncul.";
+
+      clearTimeout(timer);
+      timer = setTimeout(playSurprise, soundConfig.delay);
+    }
+
+    setupAudio();
+    startBtn.addEventListener("click", startExperience);
+  </script>
+</body>
+</html>
