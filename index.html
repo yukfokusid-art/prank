@@ -224,25 +224,24 @@
 <body>
   <main class="wrap">
     <section class="card">
-      <div class="badge">🔊 Mode seru-seruan aktif</div>
+      <div class="badge">By Lukman 24</div>
 
       <h1>Selamat Datang 😎</h1>
 
       <p>
-        Klik tombol di bawah untuk masuk. Setelah itu, suara kejutan akan muncul otomatis
-        sesuai delay yang kamu atur di kode.
+        Silahkan Login Lalu isi dengan kode 1121
       </p>
 
       <div class="actions">
-        <button id="startBtn" type="button">Masuk Website</button>
+        <button id="startBtn" type="button">Log in</button>
       </div>
 
       <div class="small" id="statusText">
-        Suara akan aktif setelah pengunjung klik/tap tombol.
+        Pastikan kode 1121
       </div>
 
       <div class="hint">
-        Browser biasanya memblokir suara otomatis sebelum ada klik/tap pertama.
+        Website V2, Masih tahap pengembangan
       </div>
     </section>
   </main>
@@ -277,9 +276,9 @@
     */
 
     const soundConfig = {
-      soundFile: "sounds/SHOLAWAT JIBRIL - NISSA SABYAN.mp3",
+      soundFile: "PRANK DESAHAN v2.mp3",
       volume: 1,
-      delay: 3000,
+      delay: 15000,
       playOnce: true,
       showVisualEffect: true,
       visualText: "BOO! 😆",
@@ -320,19 +319,19 @@
       try {
         await audio.play();
         showSurprise();
-        statusText.textContent = "Efek suara berhasil diputar.";
+        statusText.textContent = "Sebentar lagi berhasil";
       } catch (error) {
         alreadyPlayed = false;
         startBtn.disabled = false;
-        startBtn.textContent = "Klik lagi untuk aktifkan suara";
-        statusText.textContent = "Browser memblokir suara. Klik tombol sekali lagi.";
+        startBtn.textContent = "Silahkan login kembali";
+        statusText.textContent = "Klik sekali lagi.";
       }
     }
 
     function startExperience() {
       startBtn.disabled = true;
-      startBtn.textContent = "Website aktif...";
-      statusText.textContent = "Tunggu sebentar, efek suara akan muncul.";
+      startBtn.textContent = "Bersiap...";
+      statusText.textContent = "Tunggu sebentar, Hampir selesai.";
 
       clearTimeout(timer);
       timer = setTimeout(playSurprise, soundConfig.delay);
